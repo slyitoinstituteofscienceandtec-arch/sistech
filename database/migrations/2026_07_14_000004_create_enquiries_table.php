@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('subject');
             $table->text('message');
-            $table->enum('status', ['new', 'read', 'replied'])->default('new');
+            $table->string('status')->default('new');
             $table->text('admin_reply')->nullable();
             $table->unsignedBigInteger('replied_by')->nullable();
             $table->timestamp('replied_at')->nullable();

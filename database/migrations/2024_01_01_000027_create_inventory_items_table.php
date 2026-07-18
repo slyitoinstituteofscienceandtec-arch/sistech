@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code')->unique();
-            $table->enum('category', ['computer', 'furniture', 'projector', 'printer', 'networking', 'laboratory', 'office_supplies', 'other']);
+            $table->string('category');
             $table->integer('quantity')->default(0);
             $table->integer('available')->default(0);
             $table->decimal('unit_cost', 12, 2)->nullable();

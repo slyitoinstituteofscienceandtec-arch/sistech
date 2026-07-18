@@ -9,22 +9,26 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('fee_structures', function (Blueprint $table) {
-            $table->dropColumn('fee_type');
+            if (Schema::hasColumn('fee_structures', 'fee_type')) {
+                $table->dropColumn('fee_type');
+            }
         });
 
         Schema::table('invoices', function (Blueprint $table) {
-            $table->dropColumn('fee_type');
+            if (Schema::hasColumn('invoices', 'fee_type')) {
+                $table->dropColumn('fee_type');
+            }
         });
     }
 
     public function down(): void
     {
         Schema::table('fee_structures', function (Blueprint $table) {
-            $table->json('fee_type')->after('academic_year_id');
+            $table->string('fee_type')->default('tuition');
         });
 
         Schema::table('invoices', function (Blueprint $table) {
-            $table->string('fee_type')->default('tuition')->after('academic_year_id');
+            $table->string('fee_type')->default('tuition');
         });
     }
 };

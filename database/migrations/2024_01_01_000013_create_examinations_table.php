@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
             $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
             $table->foreignId('semester_id')->constrained()->cascadeOnDelete();
-            $table->enum('type', ['ca', 'assignment', 'project', 'practical', 'final', 'resit']);
+            $table->string('type');
             $table->string('title');
             $table->decimal('total_marks', 6, 2)->default(100);
             $table->decimal('weight', 5, 2)->default(0);

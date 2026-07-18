@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('programme_id')->constrained()->cascadeOnDelete();
             $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
-            $table->enum('fee_type', ['admission', 'tuition', 'examination', 'library', 'graduation', 'hostel', 'medical', 'ca', 'other']);
+            $table->string('fee_type')->default('tuition');
             $table->string('description');
             $table->decimal('amount', 12, 2);
             $table->integer('level')->nullable();

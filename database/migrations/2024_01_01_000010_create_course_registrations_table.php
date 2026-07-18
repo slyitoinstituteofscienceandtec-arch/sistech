@@ -14,7 +14,7 @@ return new class extends Migration
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
             $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
             $table->foreignId('semester_id')->constrained()->cascadeOnDelete();
-            $table->enum('status', ['registered', 'dropped', 'completed'])->default('registered');
+            $table->string('status')->default('registered');
             $table->timestamps();
 
             $table->unique(['student_id', 'course_id', 'academic_year_id', 'semester_id'], 'cr_unique_reg');

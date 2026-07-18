@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->enum('type', ['birth_cert', 'national_id', 'passport', 'certificate', 'transcript', 'admission_letter', 'fee_receipt', 'medical', 'other']);
+            $table->string('type');
             $table->string('title');
             $table->string('file_path');
             $table->string('file_type')->nullable();

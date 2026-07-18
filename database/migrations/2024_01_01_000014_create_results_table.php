@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('credit_unit', 4, 2)->nullable();
             $table->decimal('quality_point', 8, 2)->nullable();
             $table->string('remark')->nullable();
-            $table->enum('status', ['pending', 'submitted', 'approved', 'published'])->default('pending');
+            $table->string('status')->default('pending');
             $table->foreignId('entered_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
 

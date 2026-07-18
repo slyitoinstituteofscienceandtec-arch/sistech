@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->enum('type', ['general', 'academic', 'finance', 'event', 'emergency', 'exam']);
-            $table->enum('target', ['all', 'students', 'lecturers', 'staff', 'parents']);
+            $table->string('type');
+            $table->string('target');
             $table->foreignId('academic_year_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
             $table->boolean('is_active')->default(true);

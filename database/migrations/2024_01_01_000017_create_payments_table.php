@@ -14,12 +14,12 @@ return new class extends Migration
             $table->foreignId('invoice_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
             $table->decimal('amount', 12, 2);
-            $table->enum('method', ['cash', 'bank_transfer', 'mobile_money', 'card', 'cheque', 'online']);
+            $table->string('method');
             $table->string('transaction_id')->nullable();
             $table->string('bank_name')->nullable();
             $table->string('account_number')->nullable();
             $table->string('receipt_path')->nullable();
-            $table->enum('status', ['pending', 'verified', 'rejected'])->default('pending');
+            $table->string('status')->default('pending');
             $table->text('notes')->nullable();
             $table->foreignId('verified_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamp('verified_at')->nullable();

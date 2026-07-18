@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
             $table->date('date');
-            $table->enum('status', ['present', 'absent', 'late', 'excused'])->default('present');
+            $table->string('status')->default('present');
             $table->time('time_in')->nullable();
             $table->string('method', 20)->default('manual');
             $table->text('remarks')->nullable();

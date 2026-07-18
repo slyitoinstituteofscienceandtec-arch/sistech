@@ -15,9 +15,9 @@ return new class extends Migration
             $table->string('graduation_date');
             $table->string('certificate_number')->unique()->nullable();
             $table->string('class_position')->nullable();
-            $table->enum('class_of_degree', ['first_class', 'second_class_upper', 'second_class_lower', 'third_class', 'pass', 'distinction', 'merit', 'pass_merit'])->nullable();
+            $table->string('class_of_degree')->nullable();
             $table->decimal('final_cpa', 4, 2)->nullable();
-            $table->enum('status', ['pending', 'approved', 'certified'])->default('pending');
+            $table->string('status')->default('pending');
             $table->text('remarks')->nullable();
             $table->timestamps();
         });

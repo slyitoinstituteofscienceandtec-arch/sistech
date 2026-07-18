@@ -12,11 +12,11 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->enum('type', ['academic', 'social', 'sports', 'career', 'other']);
+            $table->string('type');
             $table->datetime('start_date');
             $table->datetime('end_date')->nullable();
             $table->string('location')->nullable();
-            $table->enum('target', ['all', 'students', 'lecturers', 'staff']);
+            $table->string('target');
             $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
             $table->boolean('is_active')->default(true);
             $table->timestamps();

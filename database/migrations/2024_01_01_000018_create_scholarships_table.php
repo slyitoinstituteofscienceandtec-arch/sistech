@@ -14,7 +14,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('percentage', 5, 2)->default(0);
             $table->decimal('amount', 12, 2)->nullable();
-            $table->enum('type', ['percentage', 'fixed']);
+            $table->string('type');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->decimal('amount_awarded', 12, 2);
             $table->date('start_date');
             $table->date('end_date')->nullable();
-            $table->enum('status', ['active', 'expired', 'revoked'])->default('active');
+            $table->string('status')->default('active');
             $table->timestamps();
 
             $table->unique(['student_id', 'scholarship_id', 'academic_year_id'], 'ss_unique');

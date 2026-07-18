@@ -23,6 +23,11 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        if (User::count() > 0) {
+            echo "Database already seeded. Skipping.\n";
+            return;
+        }
+
         // Super Admin
         $admin = User::create([
             'name' => 'Super Admin',
@@ -227,17 +232,16 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // Course Registrations - register each student to courses in their programme
+        // Course Registrations
         $allStudents = Student::all();
         foreach ($allStudents as $student) {
-            $sem = $sem1;
             $progCourses = Course::where('programme_id', $student->programme_id)->get();
             foreach ($progCourses as $course) {
                 CourseRegistration::create([
                     'student_id' => $student->id,
                     'course_id' => $course->id,
                     'academic_year_id' => $year2026->id,
-                    'semester_id' => $sem->id,
+                    'semester_id' => $sem1->id,
                     'status' => 'registered',
                 ]);
             }
@@ -281,8 +285,9 @@ class DatabaseSeeder extends Seeder
             ['key' => 'institution_name', 'value' => 'Slyito Institute of Science and Technology', 'group' => 'institution'],
             ['key' => 'institution_short_name', 'value' => 'SISTECH', 'group' => 'institution'],
             ['key' => 'institution_motto', 'value' => 'Connecting People to Technology', 'group' => 'institution'],
-            ['key' => 'institution_address', 'value' => 'P.O. Box 1234, Freetown, Sierra Leone', 'group' => 'institution'],
-            ['key' => 'institution_phone', 'value' => '+232 76 123 456', 'group' => 'institution'],
+            ['key' => 'institution_address', 'value' => '11B Sankoh Street, Grassfield, Waterloo, Sierra Leone', 'group' => 'institution'],
+            ['key' => 'institution_phone', 'value' => '+232 77 893 327', 'group' => 'institution'],
+            ['key' => 'institution_phone2', 'value' => '+232 34 145 006', 'group' => 'institution'],
             ['key' => 'institution_email', 'value' => 'sistech2025@gmail.com', 'group' => 'institution'],
             ['key' => 'institution_website', 'value' => 'https://sistech.website', 'group' => 'institution'],
             ['key' => 'primary_color', 'value' => '#0066CC', 'group' => 'appearance'],

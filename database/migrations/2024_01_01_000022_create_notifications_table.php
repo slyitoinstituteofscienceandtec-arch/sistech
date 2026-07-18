@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->text('message');
-            $table->enum('type', ['system', 'payment', 'academic', 'attendance', 'exam', 'announcement']);
+            $table->string('type');
             $table->boolean('is_read')->default(false);
             $table->string('link')->nullable();
             $table->timestamps();

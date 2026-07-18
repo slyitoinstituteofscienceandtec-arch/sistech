@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('books', function (Blueprint $table) {
-            $table->string('pdf_file')->nullable()->after('cover_image');
+            $table->string('pdf_file')->nullable();
         });
     }
 

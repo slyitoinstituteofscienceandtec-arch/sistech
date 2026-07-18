@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('department_id')->constrained()->cascadeOnDelete();
             $table->foreignId('programme_id')->constrained()->cascadeOnDelete();
             $table->integer('credit_units')->default(3);
-            $table->enum('semester', ['1', '2']);
+            $table->string('semester');
             $table->integer('level')->default(100);
             $table->foreignId('lecturer_id')->nullable()->constrained('users')->nullOnDelete();
             $table->text('description')->nullable();

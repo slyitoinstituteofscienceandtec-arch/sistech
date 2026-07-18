@@ -16,12 +16,12 @@ return new class extends Migration
             $table->foreignId('programme_id')->constrained()->cascadeOnDelete();
             $table->foreignId('department_id')->constrained()->cascadeOnDelete();
             $table->foreignId('academic_year_id')->nullable()->constrained()->nullOnDelete();
-            $table->enum('status', ['active', 'inactive', 'graduated', 'suspended', 'transferred', 'deferred'])->default('active');
+            $table->string('status')->default('active');
             $table->integer('level')->default(100);
             $table->integer('semester')->default(1);
             $table->date('admission_date');
             $table->date('date_of_birth')->nullable();
-            $table->enum('gender', ['male', 'female', 'other'])->nullable();
+            $table->string('gender')->nullable();
             $table->text('address')->nullable();
             $table->string('national_id')->nullable();
             $table->string('guardian_name')->nullable();

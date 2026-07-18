@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('department')->nullable();
             $table->date('start_date');
             $table->date('end_date')->nullable();
-            $table->enum('status', ['pending', 'active', 'completed', 'terminated'])->default('pending');
+            $table->string('status')->default('pending');
             $table->text('description')->nullable();
             $table->decimal('stipend', 10, 2)->nullable();
             $table->string('report_path')->nullable();
-            $table->enum('evaluation', ['excellent', 'good', 'satisfactory', 'unsatisfactory'])->nullable();
+            $table->string('evaluation')->nullable();
             $table->timestamps();
         });
     }

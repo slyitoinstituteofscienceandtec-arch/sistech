@@ -8,15 +8,12 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('fee_structures', function (Blueprint $table) {
-            $table->json('fee_type')->change();
-        });
+        // fee_type is already a string from the create migration
+        // This migration is now a no-op for PostgreSQL compatibility
     }
 
     public function down(): void
     {
-        Schema::table('fee_structures', function (Blueprint $table) {
-            $table->enum('fee_type', ['admission', 'tuition', 'examination', 'library', 'graduation', 'hostel', 'medical', 'ca', 'other'])->change();
-        });
+        // No-op
     }
 };

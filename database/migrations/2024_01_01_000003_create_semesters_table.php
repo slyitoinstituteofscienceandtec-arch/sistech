@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->enum('semester_num', ['1', '2']);
+            $table->string('semester_num');
             $table->date('start_date');
             $table->date('end_date');
             $table->boolean('is_current')->default(false);

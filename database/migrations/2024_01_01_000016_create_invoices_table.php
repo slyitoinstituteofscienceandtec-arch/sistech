@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('paid_amount', 12, 2)->default(0);
             $table->decimal('balance', 12, 2)->default(0);
             $table->date('due_date');
-            $table->enum('status', ['unpaid', 'partial', 'paid', 'overdue', 'cancelled'])->default('unpaid');
+            $table->string('status')->default('unpaid');
             $table->text('notes')->nullable();
             $table->timestamps();
         });

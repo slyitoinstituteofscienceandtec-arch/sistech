@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code')->unique();
-            $table->enum('gender', ['male', 'female', 'mixed']);
+            $table->string('gender');
             $table->integer('total_rooms')->default(0);
             $table->integer('total_beds')->default(0);
             $table->boolean('is_active')->default(true);
@@ -23,10 +23,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('hostel_id')->constrained()->cascadeOnDelete();
             $table->string('room_number');
-            $table->enum('type', ['single', 'double', 'triple', 'shared'])->default('double');
+            $table->string('type')->default('double');
             $table->integer('capacity')->default(2);
             $table->decimal('fee_per_semester', 10, 2)->nullable();
-            $table->enum('status', ['available', 'occupied', 'maintenance'])->default('available');
+            $table->string('status')->default('available');
             $table->timestamps();
 
             $table->unique(['hostel_id', 'room_number']);
@@ -39,7 +39,7 @@ return new class extends Migration
             $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
             $table->date('allocation_date');
             $table->date('release_date')->nullable();
-            $table->enum('status', ['active', 'released'])->default('active');
+            $table->string('status')->default('active');
             $table->timestamps();
 
             $table->unique(['room_id', 'student_id', 'academic_year_id'], 'bed_alloc_unique');

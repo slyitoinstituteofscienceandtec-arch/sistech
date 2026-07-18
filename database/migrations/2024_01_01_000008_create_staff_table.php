@@ -13,13 +13,13 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('staff_id')->unique();
             $table->foreignId('department_id')->nullable()->constrained()->nullOnDelete();
-            $table->enum('position', ['lecturer', 'hod', 'registrar', 'accountant', 'admin', 'librarian', 'it_support', 'security', 'cleaner', 'other'])->default('lecturer');
-            $table->enum('employment_type', ['full_time', 'part_time', 'contract', 'visiting'])->default('full_time');
+            $table->string('position')->default('lecturer');
+            $table->string('employment_type')->default('full_time');
             $table->date('hire_date');
             $table->decimal('salary', 12, 2)->nullable();
             $table->string('qualification')->nullable();
             $table->string('specialization')->nullable();
-            $table->enum('status', ['active', 'inactive', 'on_leave', 'terminated'])->default('active');
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }

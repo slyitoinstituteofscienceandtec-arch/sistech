@@ -9,13 +9,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['super_admin', 'principal', 'registrar', 'accountant', 'lecturer', 'student', 'parent', 'staff'])->default('student');
-            $table->string('phone')->nullable()->after('email');
-            $table->string('avatar')->nullable()->after('phone');
-            $table->enum('status', ['active', 'inactive', 'suspended'])->default('active')->after('role');
-            $table->boolean('two_factor_enabled')->default(false)->after('status');
-            $table->timestamp('last_login_at')->nullable()->after('two_factor_enabled');
-            $table->string('campus')->nullable()->after('last_login_at');
+            $table->string('role')->default('student');
+            $table->string('phone')->nullable();
+            $table->string('avatar')->nullable();
+            $table->string('status')->default('active');
+            $table->boolean('two_factor_enabled')->default(false);
+            $table->timestamp('last_login_at')->nullable();
+            $table->string('campus')->nullable();
         });
     }
 

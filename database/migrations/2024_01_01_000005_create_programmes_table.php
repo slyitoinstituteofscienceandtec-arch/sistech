@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('code')->unique();
             $table->foreignId('department_id')->constrained()->cascadeOnDelete();
-            $table->enum('level', ['certificate', 'diploma', 'hnd', 'professional', 'short_course']);
+            $table->string('level');
             $table->integer('duration_months')->nullable();
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);

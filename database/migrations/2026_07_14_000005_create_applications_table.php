@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('email');
             $table->string('phone')->nullable();
-            $table->enum('gender', ['male', 'female']);
+            $table->string('gender');
             $table->date('date_of_birth');
             $table->text('address')->nullable();
             $table->foreignId('programme_id')->constrained();
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('qualification')->nullable();
             $table->string('guardian_name')->nullable();
             $table->string('guardian_phone')->nullable();
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->string('status')->default('pending');
             $table->unsignedBigInteger('reviewed_by')->nullable();
             $table->timestamp('reviewed_at')->nullable();
             $table->text('review_notes')->nullable();
