@@ -338,7 +338,7 @@
             .section-header h2 { font-size: 28px; }
         }
         @media (max-width: 768px) {
-            .nav-links, .nav-actions .btn-outline { display: none; }
+            .nav-links { display: none; }
             .hamburger { display: flex; }
             .hero { padding: 70px 0 60px; }
             .hero h1 { font-size: 30px; }
@@ -395,6 +395,7 @@
             <a href="{{ route('public.gallery') }}" class="{{ request()->routeIs('public.gallery') ? 'active' : '' }}">Gallery</a>
             <a href="{{ route('public.contact') }}" class="{{ request()->routeIs('public.contact') ? 'active' : '' }}">Contact</a>
             <a href="{{ route('public.enrollment') }}" style="color:var(--primary);font-weight:700;">Apply Now →</a>
+            <a href="{{ route('login') }}" style="color:var(--primary);font-weight:700;">Login →</a>
         </div>
     </nav>
 
