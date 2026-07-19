@@ -29,13 +29,31 @@ class LibraryController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->only(['title', 'author', 'category', 'description']);
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'isbn' => 'nullable|string|max:50',
+            'publisher' => 'nullable|string|max:255',
+            'category' => 'required|string',
+            'quantity' => 'nullable|integer|min:1',
+            'shelf_location' => 'nullable|string|max:50',
+            'description' => 'nullable|string',
+            'pdf_file' => 'nullable|file|max:10240',
+        ]);
 
+        $validated['quantity'] = $validated['quantity'] ?? 1;
+        $validated['available'] = $validated['quantity'];
+
+        $pdfPath = null;
         if ($request->hasFile('pdf_file')) {
-            $data['pdf_file'] = $request->file('pdf_file')->store('books/pdfs', 'public');
+            $pdfPath = $request->file('pdf_file')->store('books/pdfs', 'public');
         }
 
-        Book::create($data);
+        unset($validated['pdf_file']);
+        $validated['pdf_file'] = $pdfPath;
+
+        Book::create($validated);
+
         return redirect()->route('admin.library.index')->with('success', 'Book added successfully.');
     }
 

@@ -23,4 +23,4 @@ COPY docker/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 
 EXPOSE 10000
 
-CMD php artisan migrate --force 2>&1; php artisan db:seed --force 2>&1; /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+CMD php artisan migrate --force 2>&1; php artisan db:seed --force 2>&1; php artisan storage:link --force 2>&1; /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
