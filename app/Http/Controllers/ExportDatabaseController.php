@@ -16,93 +16,77 @@ class ExportDatabaseController extends Controller
 
         $driver = config('database.default');
 
+        $sql = "-- SISTECH College Management System Database Export\n";
+        $sql .= "-- Date: " . date('Y-m-d H:i:s') . "\n";
+        $sql .= "-- Driver: {$driver}\n";
+        $sql .= "--\n";
+        $sql .= "-- Import instructions:\n";
+        $sql .= "-- 1. Set up a new database on your hosting\n";
+        $sql .= "-- 2. Run: php artisan migrate --force\n";
+        $sql .= "-- 3. Import this SQL file\n";
+        $sql .= "-- 4. Run: php artisan db:seed --force\n\n";
+
+        $tables = $this->getTables();
+        $skip = ['migrations', 'cache', 'jobs', 'failed_jobs', 'personal_access_tokens', 'sessions'];
+
+        foreach ($tables as $table) {
+            if (in_array($table, $skip)) {
+                continue;
+            }
+            $sql .= $this->exportTable($table);
+        }
+
+        $filename = 'sistech-db-export-' . date('Y-m-d-His') . '.sql';
+        $sql .= "-- Export complete\n";
+
+        return Response::make($sql, 200, [
+            'Content-Type' => 'application/sql',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Content-Length' => strlen($sql),
+        ]);
+    }
+
+    protected function getTables(): array
+    {
+        $driver = config('database.default');
+
         if ($driver === 'pgsql') {
-            return $this->exportPostgres();
-        } elseif ($driver === 'mysql') {
-            return $this->exportMysql();
+            $results = DB::select("SELECT tablename FROM pg_tables WHERE schemaname = 'public' ORDER BY tablename");
+            return array_map(fn($r) => $r->tablename, $results);
         }
 
-        abort(500, "Unsupported database driver: {$driver}");
+        $results = DB::select('SHOW TABLES');
+        $key = array_key_exists(0, $results) ? array_keys((array) $results[0])[0] : null;
+        return $key ? array_map(fn($r) => (array) $r[$key], $results) : [];
     }
 
-    protected function exportPostgres()
+    protected function exportTable(string $table): string
     {
-        $host = config('database.connections.pgsql.host');
-        $port = config('database.connections.pgsql.port');
-        $database = config('database.connections.pgsql.database');
-        $username = config('database.connections.pgsql.username');
-        $password = config('database.connections.pgsql.password');
+        $rows = DB::table($table)->get();
 
-        $escapedPassword = escapeshellarg($password);
-        $command = sprintf(
-            'PGPASSWORD=%s pg_dump -h %s -p %s -U %s -d %s --no-owner --no-acl --format=plain 2>&1',
-            $password,
-            escapeshellarg($host),
-            escapeshellarg($port),
-            escapeshellarg($username),
-            escapeshellarg($database)
-        );
-
-        $output = [];
-        $returnCode = 0;
-        exec($command, $output, $returnCode);
-
-        if ($returnCode !== 0) {
-            abort(500, "pg_dump failed: " . implode("\n", $output));
+        if ($rows->isEmpty()) {
+            return "-- Table: {$table} (empty)\n\n";
         }
 
-        $sql = implode("\n", $output);
-        $filename = 'sistech-db-export-' . date('Y-m-d-His') . '.sql';
+        $sql = "-- Table: {$table} ({$rows->count()} rows)\n";
 
-        return Response::make($sql, 200, [
-            'Content-Type' => 'application/sql',
-            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
-            'Content-Length' => strlen($sql),
-        ]);
-    }
+        $columns = array_keys((array) $rows->first());
+        $columnList = implode(', ', array_map(fn($c) => "\"{$c}\"", $columns));
 
-    protected function exportMysql()
-    {
-        $host = config('database.connections.mysql.host');
-        $port = config('database.connections.mysql.port');
-        $database = config('database.connections.mysql.database');
-        $username = config('database.connections.mysql.username');
-        $password = config('database.connections.mysql.password');
+        foreach ($rows as $row) {
+            $values = array_map(function ($value) {
+                if ($value === null) return 'NULL';
+                if (is_bool($value)) return $value ? 'TRUE' : 'FALSE';
+                if (is_int($value) || is_float($value)) return $value;
+                $escaped = str_replace("'", "''", (string) $value);
+                return "'{$escaped}'";
+            }, (array) $row);
 
-        $command = sprintf(
-            'mysqldump -h %s -P %s -u %s %s --no-tablespaces 2>&1',
-            escapeshellarg($host),
-            escapeshellarg($port),
-            escapeshellarg($username),
-            escapeshellarg($database)
-        );
-
-        if (!empty($password)) {
-            $command = sprintf(
-                'mysqldump -h %s -P %s -u %s -p%s %s --no-tablespaces 2>&1',
-                escapeshellarg($host),
-                escapeshellarg($port),
-                escapeshellarg($username),
-                $password,
-                escapeshellarg($database)
-            );
+            $sql .= "INSERT INTO \"{$table}\" ({$columnList}) VALUES (" . implode(', ', $values) . ");\n";
         }
 
-        $output = [];
-        $returnCode = 0;
-        exec($command, $output, $returnCode);
+        $sql .= "\n";
 
-        if ($returnCode !== 0) {
-            abort(500, "mysqldump failed: " . implode("\n", $output));
-        }
-
-        $sql = implode("\n", $output);
-        $filename = 'sistech-db-export-' . date('Y-m-d-His') . '.sql';
-
-        return Response::make($sql, 200, [
-            'Content-Type' => 'application/sql',
-            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
-            'Content-Length' => strlen($sql),
-        ]);
+        return $sql;
     }
 }
