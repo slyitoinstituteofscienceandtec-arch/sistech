@@ -146,6 +146,8 @@ Route::middleware(['auth', 'role:super_admin,principal,registrar,accountant,staf
 
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::match(['post', 'put'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
+
+    Route::get('/export-database', \App\Http\Controllers\ExportDatabaseController::class)->name('export-database');
 });
 
 Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')->group(function () {

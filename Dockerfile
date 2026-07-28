@@ -1,7 +1,7 @@
 FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip libpng-dev libonig-dev libxml2-dev libpq-dev nginx supervisor \
+    git curl zip unzip libpng-dev libonig-dev libxml2-dev libpq-dev nginx supervisor postgresql-client \
     && docker-php-ext-install pdo_pgsql pdo_mysql mbstring exif pcntl bcmath gd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 

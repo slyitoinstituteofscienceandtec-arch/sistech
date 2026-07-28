@@ -332,6 +332,9 @@
             <a href="{{ route('admin.settings.index') }}" class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
                 <i class="fas fa-cog"></i> Settings
             </a>
+            <a href="{{ route('admin.export-database') }}" class="{{ request()->routeIs('admin.export-database') ? 'active' : '' }}" onclick="return confirm('Download a SQL backup of the entire database?')">
+                <i class="fas fa-download"></i> Export Database
+            </a>
             @endif
         </nav>
     </aside>
