@@ -21,6 +21,9 @@ COPY docker/nginx.conf /etc/nginx/sites-enabled/default
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 10000
 
-CMD php artisan migrate --force 2>&1; php artisan db:seed --force 2>&1; php artisan storage:link --force 2>&1; /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+CMD ["/entrypoint.sh"]

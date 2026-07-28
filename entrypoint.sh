@@ -1,18 +1,11 @@
 #!/bin/bash
-set -ex
+set -e
 
-MARKER="storage/app/.deployed"
+# Substitute dynamic port into nginx config
+sed -i "s/__PORT__/${PORT:-10000}/g" /etc/nginx/sites-enabled/default
 
-if [ -f "$MARKER" ]; then
-    php artisan migrate --force || true
-else
-    php artisan migrate:fresh --force || true
-    php artisan db:seed --force || true
-    touch "$MARKER"
-fi
+php artisan migrate --force 2>&1 || true
+php artisan db:seed --force 2>&1 || true
+php artisan storage:link --force 2>&1 || true
 
-php artisan config:cache || true
-php artisan route:cache || true
-php artisan view:cache || true
-
-exec php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
